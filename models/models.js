@@ -66,13 +66,12 @@ const Cliente = sequelize.define('Cliente', {
     }
 });
 
-
 function gerarCarteirinha() {
     return String(Math.floor(Math.random() * 100000)).padStart(5, '0');
 }
 
 
-// LOCAÇÃO
+// LOCAÇÕES
 const Locacao = sequelize.define('Locacao', {
     id: {
         type: DataTypes.INTEGER,
@@ -100,5 +99,39 @@ const Locacao = sequelize.define('Locacao', {
     timestamps: false,
     hooks: {
         beforeCreate: (locacao) => {
-            const data = new Date();
-            data.setDate(data.getDate() + 7);
+            // Se não informar a data prevista, define +7 dias
+            if (!locacao.dataDevolucaoPrevista) {
+                const data = new Date();
+                data.setDate(data.getDate() + 7);
+                locacao.dataDevolucaoPrevista = data;
+            }
+        }
+    }
+});
+
+
+// ASSOCIAÇÕES
+
+// Um cliente pode ter várias locações
+Cliente.hasMany(Locacao, {
+    foreignKey: 'clienteCarteirinha'
+});
+Locacao.belongsTo(Cliente, {
+    foreignKey: 'clienteCarteirinha'
+});
+
+// Um filme pode ser locado várias vezes
+Filme.hasMany(Locacao, {
+    foreignKey: 'filmeId'
+});
+Locacao.belongsTo(Filme, {
+    foreignKey: 'filmeId'
+});
+
+
+// EXPORTS
+module.exports = {
+    Filme,
+    Cliente,
+    Locacao
+};
