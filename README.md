@@ -8,3 +8,4 @@ FRAMEWORKS UTILIZADOS:
 
 EXTENSÕES UTILIZADAS (VSCODE)
 - Thunder Client
+- database Client
