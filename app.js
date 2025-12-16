@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = require('./routes/routes');
-const { sequelize } = require('./models/models');
+const { sequelize } = require('sequelize');
 
 const app = express();
 app.use(express.json());
